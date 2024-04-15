@@ -1,0 +1,45 @@
+---
+- name: Build Ubuntu image
+  community.docker.docker_image_build:
+    name: "{{ image }}"
+    path: .
+    dockerfile: Dockerfile
+
+- name: "create {{ container_name }} container"
+  ansible.builtin.docker_container:
+    name: "{{ container_name }}"
+    image: "{{ image }}:{{ image_tag }}"
+    command: "{{ container_command }}"
+    auto_remove: yes
+    detach: yes
+    ports: "{{ container_ports }}"
+    volumes: "{{ container_volumes }}"
+    working_dir: "{{ container_workdir }}"
+    networks:
+      - name: "{{ network_name }}"
+
+- name: "add {{ container_name }} container to host group: {{ container_host_group }}"
+  ansible.builtin.add_host:
+    name: "{{ container_name }}"
+    groups:
+      - "{{ container_host_group }}"
+  changed_when: false
+  when: container_host_group is defined
+
+- name: "update {{ container_name }} package register"
+  ansible.builtin.command:
+    cmd: 'docker exec {{ container_name }} /bin/bash -c "apt-get update"'
+  when: container_deps is defined
+
+# - name: install dependencies
+#   ansible.builtin.command:
+#     cmd: 'docker exec {{ container_name }} /bin/bash -c "apt-get install -y {{ container_deps | join(" ") }}"'
+#   when: container_deps is defined
+
+- name: "test"
+  ansible.builtin.command:
+    cmd: 'curl ifconfig.me'
+  register: my_output
+
+- name: output
+  debug: var=my_output.stdout_lines

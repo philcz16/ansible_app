@@ -1,0 +1,33 @@
+# generated files
+bin/
+gen/
+
+# Eclipse files
+.classpath
+.project
+.settings/
+.recommenders/
+
+# Intellij files
+*.iml
+*.ipr
+*.iws
+.idea/
+out/
+
+
+# Jekyll
+docs/_site/
+docs/Gemfile.lock 
+
+# VS Code
+.vscode/
+
+# Crash log files
+crash.log
+
+# Ignore generated files
+**/.generated*
+
+# Ignore CLI configuration files
+requirements.yaml

@@ -1,0 +1,6 @@
+---
+minikube_version: "latest"
+image: "ubuntu"
+container_name: "ubuntu"
+image_tag: "latest"
+network_name: docknet

@@ -1,0 +1,21 @@
+---
+- name: Download Minikube
+  get_url:
+    url: "https://storage.googleapis.com/minikube/releases/{{ minikube_version }}/minikube-linux-amd64"
+    dest: "/usr/local/bin/minikube"
+    mode: '0755'
+
+- name: Ensure Docker service is running
+  service:
+    name: docker
+    state: started
+
+- name: Launch Minikube Docker container
+  docker_container:
+    name: minikube
+    image: "{{ docker_image }}"
+    state: started
+    privileged: yes
+    command: /bin/bash -c 'curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && install minikube-linux-amd64 /usr/local/bin/minikube && minikube start --driver=docker --force'
+    interactive: yes
+    tty: yes

@@ -1,0 +1,12 @@
+---
+- name: Postgres database
+  hosts: dockerhost
+  vars:
+    image: "ubuntu"
+    image_tag: "latest"
+    container_name: "ubuntu"
+    container_ports: "80"
+    container_host_group: ubuntu
+    network_name: docknet
+  roles:
+    - deploy_minikube

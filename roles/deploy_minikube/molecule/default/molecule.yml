@@ -1,0 +1,24 @@
+---
+scenario:
+  name: default
+  test_sequence:
+    - destroy
+    - converge
+    - destroy
+
+dependency:
+  name: galaxy
+
+platforms:
+  - name: instance
+    env:
+      molecule_instance_name: instance
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_VERBOSITY: 3
+
+verifier:
+  name: ansible
+role_name_check: 1
